@@ -29,6 +29,20 @@ async def scrape_data(file_name: str):
         "language": "en"
     }
     data = await fetch_url('POST', url, 1, payload=payload)
+    if data is None:
+        logger.error('No data returned from the fetch operation')
+        return  # Exit the function if no data was fetched
+
+    try:
+        json_data = json.loads(data)
+    except json.JSONDecodeError as e:
+        logger.error(f"Failed to decode JSON from the response: {e}")
+        return  # Exit the function if JSON decoding fails
+
+        # Check if the expected keys exist in the JSON data
+    if 'results' not in json_data or 'objects' not in json_data['results']:
+        logger.error("JSON structure does not match expected format")
+        return  # Exit the function if the JSON structure is incorrect
     result = [{
         'url': 'https://www.vesteda.com' + elm['url'],
         'rent_price': int(elm['priceUnformatted']),

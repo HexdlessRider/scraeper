@@ -2892,14 +2892,28 @@ async def main_koop():
 
         }
 
-        data = await fetch_url('POST', url, 1, payload=payload, headers=headers,
-                               )
         try:
-            data = json.loads(data)['search_result']['hits']['hits']
+            raw_data = await fetch_url('POST', url, 1, payload=payload, headers=headers)
+            if raw_data is None:
+                logging.error('No data received from the server')
+                return  # Exit the function if no data was fetched
+
+            json_data = json.loads(raw_data)
+            if 'search_result' not in json_data or 'hits' not in json_data['search_result'] or 'hits' not in \
+                    json_data['search_result']['hits']:
+                logging.error('JSON does not contain the expected data structure')
+                return  # Exit the function if the JSON structure is incorrect
+
+            data = json_data['search_result']['hits']['his']
+            if not data:
+                logging.error('Data list is empty')
+                return  # Exit if data is empty or not present
+            data = [elm['_source'] for elm in data]
+            result.extend(data)
+        except json.JSONDecodeError as err:
+            logging.error(f'Error decoding JSON: {err}')
         except Exception as err:
-            logging.error(f'Error: {err}')
-        data = [elm['_source'] for elm in data]
-        result.extend(data)
+            logging.error(f'Unexpected error: {err}')
     return result
 
 

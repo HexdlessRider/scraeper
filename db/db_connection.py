@@ -16,13 +16,12 @@ async def lifespan():
     url: str = SUPABASE_URL
     key: str = SUPABASE_KEY
     secret_key: str = SUPABASE_SECRET_KEY
-    logger.info(f'{url, key, secret_key}')
     if client is None:
         client = await create_client(url, key, secret_key,
                                      options=ClientOptions(
                                          postgrest_client_timeout=10, storage_client_timeout=10))
         try:
-            print("connect to db")
+            logger.info("connect to db")
             yield client
         except Exception as e:
             print("er ", e)
