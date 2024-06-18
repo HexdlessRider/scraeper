@@ -15,7 +15,8 @@ async def scrape_data(file_name: str):
     url = "https://ikwilhuren.nu/aanbod/"
 
     r = await fetch_url('GET', url)
-
+    if not r:
+        return
     count_item_str = BeautifulSoup(r, "html.parser").find("span", class_="ff-roboto-slab").text
     count_item = int(re.sub(r"[^\d,]", "", count_item_str))
     print(count_item)
