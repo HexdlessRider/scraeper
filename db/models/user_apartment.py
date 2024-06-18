@@ -53,7 +53,7 @@ class UserApartmentStore:
                     except Exception as e:
                         print(e)
                 if updated_array:
-                    print(updated_array)
+                    # print(updated_array)
                     await client.table("user_apartments").insert(updated_array).execute()
 
     @staticmethod

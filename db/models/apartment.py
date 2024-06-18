@@ -79,8 +79,6 @@ class ApartmentStore:
             if data['min_price'] and data['max_price']:
                 budget_min, budget_max = data['min_price'], data['max_price']
                 range_price = tuple(range(round(budget_min), round(budget_max)))
-
-                print(range_price)
                 query = query.or_(f"selling_price.in.{range_price}, rent_price.in.{range_price}")
 
             elif data['min_price']:
