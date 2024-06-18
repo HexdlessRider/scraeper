@@ -1463,8 +1463,8 @@ async def main_koop():
             return  # Exit the function or handle the case where no data is returned
 
         json_data = json.loads(data)
-        if 'search_result' not in json_data or 'hits' not in json_data['search_if_search_data'] or 'total' not in \
-                json_data['total']['hits']:
+        if 'search_result' not in json_data or 'hits' not in json_data['search_result'] or 'total' not in \
+                json_data['search_result']['hits']:
             logging.error("Invalid JSON structure")
             return  # Handle the case where JSON structure is different
 
@@ -4369,9 +4369,29 @@ async def main_huur():
 
     }
 
-    data = await fetch_url('POST', url, 1, payload=payload_huur, headers=headers,
-                           )
-    count_items = json.loads(data)['search_result']['hits']['total']['value']
+    try:
+        data = await fetch_url('POST', url, 1, payload=payload_huur, headers=headers)
+        if data is None:
+            logging.error("Failed to fetch data: No response")
+            return  # Exit the function or handle the case where no data is returned
+
+        json_data = json.loads(data)
+        if 'search_result' not in json_data or 'hits' not in json_data['search_result'] or 'total' not in \
+                json_data['search_result']['hits']:
+            logging.error("Invalid JSON structure")
+            return  # Handle the case where JSON structure is different
+
+        count_items = json_data['search_result']['hits']['total']['value']
+    except json.JSONDecodeError as e:
+        logging.error(f"JSON decoding failed: {e}")
+        return  # Exit the function or handle JSON decode error
+    except KeyError as e:
+        logging.error(f"Data parsing error - key missing: {e}")
+        return  # Handle missing keys in JSON data
+    except Exception as e:
+        logging.error(f"An unexpected error occurred: {e}")
+        return  # Handle other unexpected errors
+
     pages = (count_items // 750) + 1
     result = []
     for page in range(1, pages + 1):
