@@ -66,7 +66,7 @@ async def main():
     script_name = (os.path.basename(script_path)).split('.')[0]
     while True:
         await scrape_data(file_name=script_name)
-        time.sleep(VESTEDA_CD)
+        await asyncio.sleep(VESTEDA_CD)
 
 
 if __name__ == "__main__":

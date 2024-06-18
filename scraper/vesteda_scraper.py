@@ -69,7 +69,7 @@ async def main():
         await scrape_data(file_name=script_name)
 
         # asyncio.run(scrape_data(file_name=script_name))
-        time.sleep(VESTEDA_CD)
+        await asyncio.sleep(VESTEDA_CD)
 
 
 if __name__ == "__main__":
