@@ -1,0 +1,16 @@
+FROM python:3.10-slim
+
+WORKDIR .
+
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir --upgrade -r requirements.txt
+
+COPY . .
+RUN #cd scraper
+CMD ["python", "-m", "scraper.yourexpatbroker_scraper"]
+
+
+
