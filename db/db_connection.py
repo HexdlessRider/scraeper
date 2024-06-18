@@ -24,6 +24,6 @@ async def lifespan():
             logger.info("connect to db")
             yield client
         except Exception as e:
-            print("er ", e)
+            logger.error(f"connect to db --- -- {str(e)}")
     else:
         yield client
