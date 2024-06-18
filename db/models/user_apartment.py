@@ -49,7 +49,7 @@ class UserApartmentStore:
                         if user['whatsapp']:
                             logger.info(formatted_data)
                             await send_whatsapp(formatted_data, user['phone_number'])
-                            logger.info("------SEND WHATSAPP MESSAGE-------")
+                            # logger.info("------SEND WHATSAPP MESSAGE-------")
                     except Exception as e:
                         print(e)
                 if updated_array:
