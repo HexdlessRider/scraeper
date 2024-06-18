@@ -57,6 +57,12 @@ async def scrape_data(file_name: str):
                 })
         except Exception as e:
             logging.error(f"Error processing page {page_url}: {e}")
+    if result:
+        try:
+            await ApartmentStore.create_or_update_apartment(result, file_name)
+        except Exception as e:
+            logging.info(f'{str(e)}')
+
 
 
 async def main():

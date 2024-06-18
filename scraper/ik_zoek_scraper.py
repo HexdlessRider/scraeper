@@ -40,10 +40,14 @@ async def scrape_data(file_name: str):
     data_huren = await fetch_url('POST', url, payload=payload_huren)
     data_parkeren = await fetch_url('POST', url, payload=payload_parkeren)
     data_bedrijfsruimte = await fetch_url('POST', url, payload=payload_bedrijfsruimte)
-    result.extend(json.loads(data_kopen)['data'])
-    result.extend(json.loads(data_huren)['data'])
-    result.extend(json.loads(data_parkeren)['data'])
-    result.extend(json.loads(data_bedrijfsruimte)['data'])
+    if data_kopen:
+        result.extend(json.loads(data_kopen)['data'])
+    if data_huren:
+        result.extend(json.loads(data_huren)['data'])
+    if data_parkeren:
+        result.extend(json.loads(data_parkeren)['data'])
+    if data_bedrijfsruimte:
+        result.extend(json.loads(data_bedrijfsruimte)['data'])
 
     result = [{
         'url': 'https://ik-zoek.de-alliantie.nl/' + elm['url'],

@@ -16,7 +16,7 @@ rb = Redis(host=REDIS_HOST, port=REDIS_PORT, db=1)
 
 
 class FilterSchema(BaseModel):
-    user_id: int
+    user_id: str
     min_price: float | None = None
     max_price: float | None = None
     min_square_meters: int | None = None

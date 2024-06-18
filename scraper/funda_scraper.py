@@ -1456,9 +1456,28 @@ async def main_koop():
 
     }
 
-    data = await fetch_url('POST', url, 1, payload=payload_koop, headers=headers,
-                           )
-    count_items = json.loads(data)['search_result']['hits']['total']['value']
+    try:
+        data = await fetch_url('POST', url, 1, payload=payload_koop, headers=headers)
+        if data is None:
+            logging.error("Failed to fetch data: No response")
+            return  # Exit the function or handle the case where no data is returned
+
+        json_data = json.loads(data)
+        if 'search_result' not in json_data or 'hits' not in json_data['search_if_search_data'] or 'total' not in \
+                json_data['total']['hits']:
+            logging.error("Invalid JSON structure")
+            return  # Handle the case where JSON structure is different
+
+        count_items = json_data['search_result']['hits']['total']['value']
+    except json.JSONDecodeError as e:
+        logging.error(f"JSON decoding failed: {e}")
+        return  # Exit the function or handle JSON decode error
+    except KeyError as e:
+        logging.error(f"Data parsing error - key missing: {e}")
+        return  # Handle missing keys in JSON data
+    except Exception as e:
+        logging.error(f"An unexpected error occurred: {e}")
+        return  # Handle other unexpected errors
     count_items = 10000
     pages = (count_items // 750) + 1
     result = []
@@ -2904,7 +2923,7 @@ async def main_koop():
                 logging.error('JSON does not contain the expected data structure')
                 return  # Exit the function if the JSON structure is incorrect
 
-            data = json_data['search_result']['hits']['his']
+            data = json_data['search_result']['hits']['hits']
             if not data:
                 logging.error('Data list is empty')
                 return  # Exit if data is empty or not present
@@ -2913,6 +2932,7 @@ async def main_koop():
         except json.JSONDecodeError as err:
             logging.error(f'Error decoding JSON: {err}')
         except Exception as err:
+            logging.info(str(err))
             logging.error(f'Unexpected error: {err}')
     return result
 
@@ -5788,14 +5808,17 @@ async def scrape_data(file_name: str):
     data_koop = await main_koop()
     data_huur = await main_huur()
     data = []
-    data.extend(data_koop)
-    data.extend(data_huur)
+    if data_koop:
+        data.extend(data_koop)
+    if data_huur:
+        data.extend(data_huur)
     result = [{
         'url': 'https://www.funda.nl' + elm['object_detail_page_relative_url'],
-        'selling_price': int(elm['price']['selling_price'][0]) if isinstance(elm['price'].get('selling_price'),list) and
-                                                                    elm['price'].get('selling_price') else None,
+        'selling_price': int(elm['price']['selling_price'][0]) if isinstance(elm['price'].get('selling_price'),
+                                                                             list) and
+                                                                  elm['price'].get('selling_price') else None,
         'rent_price': int(elm['price']['rent_price'][0]) if isinstance(elm['price'].get('rent_price'), list) and
-                                                                    elm['price'].get('rent_price') else None,
+                                                            elm['price'].get('rent_price') else None,
         'square_meters': elm['floor_area'][0],
         'bedrooms': elm['number_of_bedrooms'],
         'location': f"{elm['address']['city']}, {elm['address']['street_name']} {elm['address'].get('house_number', '')}",

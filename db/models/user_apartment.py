@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class UserApartmentSchema(BaseModel):
-    user_id: int
+    user_id: str
     apart_id: int
     created_at: datetime
     updated_at: datetime
@@ -24,7 +24,7 @@ class UserApartmentSchema(BaseModel):
 class UserApartmentStore:
 
     @staticmethod
-    async def create_task(user_id: int, filtered_apartments: dict):
+    async def create_task(user_id: str, filtered_apartments: dict):
         async with lifespan() as client:
 
             user_apartments = await client.table('user_apartments').select("apartment_id").eq("user_id",
