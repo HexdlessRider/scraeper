@@ -93,8 +93,8 @@ class ApartmentStore:
             if data['min_square_meters']:
                 query = query.gte('square_meters', data['min_square_meters'])
 
-            if data['furnishing']:
-                query = query.eq('furnishing', data['furnishing'])
+            if data['furnished']:
+                query = query.eq('furnished', data['furnished'])
 
             if data['location']:
                 query = query.ilike('location', f"%{data['location']}%")

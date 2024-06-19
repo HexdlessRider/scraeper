@@ -20,7 +20,7 @@ class FilterSchema(BaseModel):
     min_price: float | None = None
     max_price: float | None = None
     min_square_meters: int | None = None
-    furnishing: str | None = None
+    furnished: bool | None = None
     location: str | None = None
     # is_student: bool | None = None
     # exclude_senior_housing: bool | None = None
