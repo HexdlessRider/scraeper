@@ -74,6 +74,8 @@ class ApartmentStore:
     async def get_filtered_apartment(data: FilterSchema):
         data = data.dict()
         async with (lifespan() as client):
+            if len(data) < 1:
+                return
             query = client.table('apartments').select('*')
             # Apply data based on the provided dictionary
             if data['min_price'] and data['max_price']:
