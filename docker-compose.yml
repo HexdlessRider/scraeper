@@ -3,37 +3,37 @@ version: '3.8'
 
 services:
 
- parser1:
-   container_name: funda_scraper
-   build:
-     dockerfile: Dockerfile_funda
+  parser1:
+    container_name: funda_scraper
+    build:
+      dockerfile: Dockerfile_funda
 
 
- parser2:
-   container_name: ik_zoek_scraper
-   build:
-     dockerfile: Dockerfile_ik_zoek
+  parser2:
+    container_name: ik_zoek_scraper
+    build:
+      dockerfile: Dockerfile_ik_zoek
 
 
- parser3:
-   container_name: vesteda_scraper
-   build:
-     dockerfile: Dockerfile_vesteda
+  parser3:
+    container_name: vesteda_scraper
+    build:
+      dockerfile: Dockerfile_vesteda
 
- parser4:
-   container_name: woningnetregioamsterdam_scraper
-   build:
-     dockerfile: Dockerfile_woningnetregioamsterdam
+  parser4:
+    container_name: woningnetregioamsterdam_scraper
+    build:
+      dockerfile: Dockerfile_woningnetregioamsterdam
 
- parser5:
-   container_name: yourexpatbroker_scraper
-   build:
-     dockerfile: Dockerfile_yourexpatbroker
+  parser5:
+    container_name: yourexpatbroker_scraper
+    build:
+      dockerfile: Dockerfile_yourexpatbroker
 
- parser6:
-   container_name: ikwilhuren_scrape
-   build:
-     dockerfile: Dockerfile_ikwilhuren
+  parser6:
+    container_name: ikwilhuren_scrape
+    build:
+      dockerfile: Dockerfile_ikwilhuren
 
 
   user_filtering:
