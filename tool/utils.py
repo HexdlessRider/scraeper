@@ -21,18 +21,21 @@ def compare_dicts_by_key_fast(array1, array2, key, keys_to_check):
 
 
 def generate_rental_listings_message(user, apartments):
-    message = f"Instarent nieuwe huurwoning\n\nHoi {user['username']},\n\nWe hebben meerdere nieuwe huurwoningen gevonden die passen bij je zoekfilters:\n\n"
+    message = f"Instarent nieuwe huurwoning\n\nHoi {user['first_name']},\n\nWe hebben meerdere nieuwe huurwoningen gevonden die passen bij je zoekfilters:\n\n"
     try:
+        i = 1
         for apartment in apartments:
             message += (
+                f"\t {i}.\n"
                 f"{apartment['location']}\n"
                 f"{apartment['address']}\n"
-                f"€{apartment['price']}\n"
+                f"€{apartment['rent_price']}\n"
                 f"{apartment['bedrooms']}\n"
                 f"{apartment['square_meters']} m2\n\n"
-                f"{apartment['link']}\n\n"
+                f"{apartment['url']}\n\n"
             )
+            i += 1
     except Exception as e:
-        logging.error(e)
+        logging.error(f'generate_rental_listings {e}')
 
     return message, user['phone_number']

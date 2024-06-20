@@ -42,18 +42,20 @@ class UserApartmentStore:
                     updated_array.append({"user_id": user_id, "apartment_id": item['id']})
 
             if filtered_array or updated_array:
+                can_send = None
                 if filtered_array:
                     user = await UserStore.get_user_by_id(user_id=user_id)
-                    message, phone_number = generate_rental_listings_message(filtered_array, user)
+                    message, phone_number = generate_rental_listings_message(user, filtered_array)
                     try:
                         # formatted_data = json.dumps(filtered_array, indent=4)
-                        await send_email("Instarent nieuwe huurwoning", message, user['email'])
+                        status = await send_email("Instarent nieuwe huurwoning", message, user['email'])
+                        can_send = status
                         if user['whatsapp']:
-                            await send_whatsapp(message, user)
+                            await send_whatsapp(message, phone_number)
                             logger.info("------SEND WHATSAPP MESSAGE-------")
                     except Exception as e:
                         logger.error(e)
-                if updated_array:
+                if can_send and updated_array:
                     await client.table("user_apartments").insert(updated_array).execute()
 
     @staticmethod

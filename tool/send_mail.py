@@ -3,8 +3,10 @@ import logging
 import smtplib
 from email.mime.text import MIMEText
 from settings.config import GMAIL_EMAIL, GMAIL_PASSWORD, MAIL_HOST, MAIL_PORT
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 async def send_email(subject, body, recipients, sender=GMAIL_EMAIL, password=GMAIL_PASSWORD):
     msg = MIMEText(body)
@@ -24,6 +26,7 @@ async def send_email(subject, body, recipients, sender=GMAIL_EMAIL, password=GMA
 
         # Send email using the executor
         await loop.run_in_executor(None, smtp_server.send_message, msg)
+        logger.info('Email sent')
         return True
 
     except Exception as e:

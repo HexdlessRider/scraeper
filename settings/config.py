@@ -3,9 +3,9 @@ from dotenv import load_dotenv
 load_dotenv()
 # arg = os.getenv("arg")
 
-GMAIL_PASSWORD = os.environ.get('GMAIL_PASSWORD', "dVabF789ydGMHvhe4A")
-GMAIL_EMAIL = os.environ.get('GMAIL_EMAIL', "micaela.gusikowski20@ethereal.email")
-MAIL_HOST = 'smtp.ethereal.email'
+GMAIL_PASSWORD = os.environ.get('GMAIL_PASSWORD')
+GMAIL_EMAIL = os.environ.get('GMAIL_EMAIL')
+MAIL_HOST = 'smtp.gmail.com'
 MAIL_PORT = 587
 
 META_BASE_URL = os.environ.get('META_BASE_URL', "")
