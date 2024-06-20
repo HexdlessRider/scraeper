@@ -5841,7 +5841,8 @@ async def scrape_data(file_name: str):
                                                             elm['price'].get('rent_price') else None,
         'square_meters': elm['floor_area'][0],
         'bedrooms': elm['number_of_bedrooms'],
-        'location': f"{elm['address']['city']}, {elm['address']['street_name']} {elm['address'].get('house_number', '')}",
+        'location': f"{elm['address']['city']}",
+        'address': f"{elm['address']['street_name']} {elm['address'].get('house_number', '')}"
     } for elm in data]
     if result:
         await ApartmentStore.create_or_update_apartment(result, file_name)

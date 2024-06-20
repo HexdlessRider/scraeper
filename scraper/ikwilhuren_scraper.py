@@ -54,7 +54,8 @@ async def scrape_data(file_name: str):
                     'rent_price': price,
                     'square_meters': None if sq_feet == "" else int(sq_feet),
                     'bedrooms': None if bedrooms == "" else int(bedrooms),
-                    'location': f"{city}, {address}",
+                    'location': f"{city}",
+                    'address': f"{address}"
                 })
         except Exception as e:
             logging.error(f"Error processing page {page_url}: {e}")

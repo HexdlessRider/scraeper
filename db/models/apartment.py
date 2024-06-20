@@ -5,7 +5,7 @@ from aioredis import Redis
 from pydantic import BaseModel, ValidationError
 from db.db_connection import lifespan
 from db.models.filter import FilterStore, FilterSchema
-from tool.validate_data import compare_dicts_by_key_fast
+from tool.utils import compare_dicts_by_key_fast
 from settings.config import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_PASSWORD
 
 rb = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
@@ -20,6 +20,7 @@ class ApartmentSchema(BaseModel):
     square_meters: float | int | None = None
     bedrooms: int | None = None
     location: str | None = None
+    address: str | None = None
     furnished: bool | None = None
 
 
@@ -74,8 +75,7 @@ class ApartmentStore:
     async def get_filtered_apartment(data: FilterSchema):
         data = data.dict()
         async with (lifespan() as client):
-            if len(data) < 1:
-                return
+
             query = client.table('apartments').select('*')
             # Apply data based on the provided dictionary
             if data['min_price'] and data['max_price']:
@@ -101,11 +101,8 @@ class ApartmentStore:
             if data['location']:
                 query = query.ilike('location', f"%{data['location']}%")
 
-            # if 'is_student' in data:
-            #     query = query.eq('is_student', data['is_student'])
-
-            # if 'exclude_senior_housing' in data:
-            #     query = query.not_('senior_housing', 'eq', True)
+            if data['address']:
+                query = query.ilike('address', f"%{data['address']}%")
 
             # Execute the query and handle the response
             apartment = await query.execute()

@@ -22,8 +22,7 @@ class FilterSchema(BaseModel):
     min_square_meters: int | None = None
     furnished: bool | None = None
     location: str | None = None
-    # is_student: bool | None = None
-    # exclude_senior_housing: bool | None = None
+    address: str | None = None
 
 
 class FilterStore:

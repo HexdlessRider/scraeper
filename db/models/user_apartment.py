@@ -10,13 +10,15 @@ from db.models.filter import FilterSchema, FilterStore
 from db.models.user import UserStore
 from tool.send_mail import send_email
 from tool.send_whatsapp import send_whatsapp
+from tool.utils import generate_rental_listings_message
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class UserApartmentSchema(BaseModel):
     user_id: str
-    apart_id: int
+    apartment_id: int
     created_at: datetime
     updated_at: datetime
 
@@ -42,18 +44,16 @@ class UserApartmentStore:
             if filtered_array or updated_array:
                 if filtered_array:
                     user = await UserStore.get_user_by_id(user_id=user_id)
-                    # print(filtered_array)
+                    message, phone_number = generate_rental_listings_message(filtered_array, user)
                     try:
-                        formatted_data = json.dumps(filtered_array, indent=4)
-                        await send_email("Updated apartments", formatted_data, user['email'])
+                        # formatted_data = json.dumps(filtered_array, indent=4)
+                        await send_email("Instarent nieuwe huurwoning", message, user['email'])
                         if user['whatsapp']:
-                            logger.info(formatted_data)
-                            await send_whatsapp(formatted_data, user['phone_number'])
-                            # logger.info("------SEND WHATSAPP MESSAGE-------")
+                            await send_whatsapp(message, user)
+                            logger.info("------SEND WHATSAPP MESSAGE-------")
                     except Exception as e:
-                        print(e)
+                        logger.error(e)
                 if updated_array:
-                    # print(updated_array)
                     await client.table("user_apartments").insert(updated_array).execute()
 
     @staticmethod

@@ -5,6 +5,7 @@ import httpx
 import requests
 
 from settings import config
+from tool.utils import generate_rental_listings_message
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -15,6 +16,7 @@ async def send_whatsapp(message: str, phone_number: str):
         'Authorization': f'Bearer {config.META_ACCESS_TOKEN}',
         'Content-Type': 'application/json'
     }
+
 
     data = {
         "messaging_product": "whatsapp",
@@ -34,4 +36,3 @@ async def send_whatsapp(message: str, phone_number: str):
         else:
             logging.info("Failed to send message:", response.text)
 
-# asyncio.run(send_whatsapp("erytuyreew", "380679907105"))

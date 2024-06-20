@@ -48,8 +48,7 @@ async def scrape_data(file_name: str):
         'rent_price': int(elm['priceUnformatted']),
         'square_meters': elm['size'],
         'bedrooms': elm['numberOfBedRooms'],
-        'location': elm['location'],
-        # clear_info # ???
+        'location': elm['location']
     } for elm in json.loads(data)['results']['objects']]
 
     if result:

@@ -52,14 +52,12 @@ async def scrape_data(file_name: str):
                 'rent_price': price,
                 'square_meters': sq_feet,
                 'bedrooms': bedrooms,
-                'location': f"{city}, {address}",
+                'location': f"{city}",
+                'address': f"{address}",
                 'furnished': furnished
             })
         num += 10
 
-    #
-    # print(result)
-    # print(len(result))
     if result:
         await ApartmentStore.create_or_update_apartment(result, file_name)
         # await check uniq result (service class in db)

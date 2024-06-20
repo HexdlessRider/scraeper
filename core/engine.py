@@ -1,12 +1,7 @@
 import asyncio
 import logging
-import re
-import time
-
 import httpx
-import pprint  # TODO: remove
-import json
-from bs4 import BeautifulSoup
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

@@ -48,7 +48,8 @@ async def scrape_data(file_name: str):
         'rent_price': float(elm['GepersonaliseerdeHuur']),
         'square_meters': elm['Eenheid']['WoonVertrekkenTotOpp'],
         'bedrooms': elm['Eenheid']['AantalKamers'],
-        'location': f"{elm['Adres']['Woonplaats']}, {elm['Adres']['Straatnaam']} {elm['Adres']['Huisnummer']}",
+        'location': f"{elm['Adres']['Woonplaats']}",
+        'address': f"{elm['Adres']['Straatnaam']} {elm['Adres']['Huisnummer']}"
         # clear_info # ???
     } for elm in data['data']['PublicatieLijst']['List']]
     # print(result)

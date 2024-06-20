@@ -54,7 +54,8 @@ async def scrape_data(file_name: str):
         'rent_price': int(re.sub(r'\D', '', elm['price'])),
         'square_meters': elm['size'],
         'bedrooms': elm['rooms'],
-        'location': f"{elm['url'].split('/')[-2].capitalize()}, {elm['address']}",
+        'location': f"{elm['url'].split('/')[-2].capitalize()}",
+        'address': f"{elm['address']}"
     } for elm in result]
 
     if result:
