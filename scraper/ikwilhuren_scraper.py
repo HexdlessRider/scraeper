@@ -13,8 +13,10 @@ from core.engine import fetch_url
 
 async def scrape_data(file_name: str):
     url = "https://ikwilhuren.nu/aanbod/"
+    headers = {'User-Agent': 'Mozilla/5.0 (X11; OpenBSD i386) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'}
 
-    r = await fetch_url('GET', url)
+    r = await fetch_url('GET', url, headers=headers)
+
     if not r:
         return
     count_item_str = BeautifulSoup(r, "html.parser").find("span", class_="ff-roboto-slab").text
@@ -23,7 +25,7 @@ async def scrape_data(file_name: str):
     result = []
     for page in range(1, (count_item // 10) + 1):
         page_url = f'https://ikwilhuren.nu/aanbod/?page={page}'
-        res = await fetch_url('GET', page_url)
+        res = await fetch_url('GET', page_url, headers=headers)
         if not res:
             logging.error(f"Failed to fetch data from {page_url}")
             continue  # Skip this iteration if no response is received
@@ -33,7 +35,7 @@ async def scrape_data(file_name: str):
             for card in cards:
                 url = card.find(class_='stretched-link').get('href')
                 if 'http' not in url:
-                    url = 'https://ikwilhuren.nu' + url
+                    url = 'https://ikwilhuren.nu/' + url
                 data = card.find(class_='dotted-spans').text.split('\n')
                 _, price, d = card.find(class_='dotted-spans').text.split('\n')
                 try:
