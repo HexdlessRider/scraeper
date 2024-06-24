@@ -36,3 +36,6 @@ async def send_whatsapp(message: str, phone_number: str):
         else:
             logging.info("Failed to send message:", response.text)
 
+
+
+asyncio.run(send_whatsapp("dafsgdhfgjkl", "380679907105"))

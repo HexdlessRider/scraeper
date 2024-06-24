@@ -21,4 +21,4 @@ REDIS_PORT = os.environ.get('REDIS_PORT', 6379)
 REDIS_DB = os.environ.get('REDIS_DB', 0)
 REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD', None)
 
-VESTEDA_CD = int(os.environ.get('VESTEDA_CD', 30))
+VESTEDA_CD = int(os.environ.get('VESTEDA_CD', 1800))

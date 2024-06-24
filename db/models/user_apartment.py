@@ -45,13 +45,14 @@ class UserApartmentStore:
                 can_send = None
                 if filtered_array:
                     user = await UserStore.get_user_by_id(user_id=user_id)
-                    message, phone_number = generate_rental_listings_message(user, filtered_array)
+                    list_message, static_message, phone_number = generate_rental_listings_message(user, filtered_array)
                     try:
                         # formatted_data = json.dumps(filtered_array, indent=4)
-                        status = await send_email("Instarent nieuwe huurwoning", message, user['email'])
+                        status = await send_email("Instarent nieuwe huurwoning", static_message, user['email'])
                         can_send = status
                         if user['whatsapp']:
-                            await send_whatsapp(message, phone_number)
+                            for i in list_message:
+                                await send_whatsapp(i, phone_number)
                             logger.info("------SEND WHATSAPP MESSAGE-------")
                     except Exception as e:
                         logger.error(e)
