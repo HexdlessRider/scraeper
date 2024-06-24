@@ -28,22 +28,24 @@ def generate_rental_listings_message(user, apartments):
         i = 1
         for apartment in apartments:
             message_data = (
-                f"\t {i}.\n"
-                f"{apartment['location']}\n"
-                f"{apartment['address']}\n"
-                f"€{apartment['rent_price'] if apartment['rent_price'] else apartment['selling_price']}\n"
-                f"{apartment['bedrooms']}\n"
-                f"{apartment['square_meters']} m2\n\n"
-                f"{apartment['url']}\n\n"
+                f"{i}.\n"
+                f"\t {apartment['location']}\n"
+                f"\t {apartment['address']}\n"
+                f"\t €{apartment['rent_price'] if apartment['rent_price'] else apartment['selling_price']}\n"
+                f"\t {apartment['bedrooms']}\n"
+                f"\t {apartment['square_meters']} m2\n"
+                f"\t {apartment['url']}\n\n"
             )
             if len(message_data) + len(message) < 4096:
                 message += message_data
             else:
-                rental_listings.append(message_data)
+                rental_listings.append(message)
                 static_message += message
                 message = ""
             i += 1
     except Exception as e:
         logging.error(f'generate_rental_listings {e}')
-
-    return message, static_message, user['phone_number']
+    if len(rental_listings) == 0:
+        static_message = message
+        rental_listings.append(static_message)
+    return rental_listings, static_message, user['phone_number']

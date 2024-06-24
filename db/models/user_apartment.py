@@ -51,7 +51,9 @@ class UserApartmentStore:
                         status = await send_email("Instarent nieuwe huurwoning", static_message, user['email'])
                         can_send = status
                         if user['whatsapp']:
+                            print(list_message)
                             for i in list_message:
+                                logger.info(i)
                                 await send_whatsapp(i, phone_number)
                             logger.info("------SEND WHATSAPP MESSAGE-------")
                     except Exception as e:
