@@ -36,3 +36,4 @@ async def send_whatsapp(message: str, phone_number: str):
         else:
             logging.info("Failed to send message:", response.text)
 
+

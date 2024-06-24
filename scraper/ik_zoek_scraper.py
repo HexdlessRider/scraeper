@@ -50,8 +50,8 @@ async def scrape_data(file_name: str):
         result.extend(json.loads(data_bedrijfsruimte)['data'])
     result = [{
         'url': 'https://ik-zoek.de-alliantie.nl/' + elm['url'],
-        'rent_price': int(re.sub(r'\D', '', elm['price'])) if "/kopen/" not in url else None,
-        'selling_price': int(re.sub(r'\D', '', elm['price'])) if "/kopen/" in url else None,
+        'rent_price': int(re.sub(r'\D', '', elm['price'])) if "kopen/" not in elm['url'] else None,
+        'selling_price': int(re.sub(r'\D', '', elm['price'])) if "kopen/" in elm['url'] else None,
         'square_meters': elm['size'],
         'bedrooms': elm['rooms'],
         'location': f"{elm['url'].split('/')[-2].capitalize()}",
