@@ -21,7 +21,7 @@ def compare_dicts_by_key_fast(array1, array2, key, keys_to_check):
 
 
 def generate_rental_listings_message(user, apartments):
-    static_message = ""
+    static_message = []
     rental_listings = []
     message = f"Instarent nieuwe huurwoning\n\nHoi {user['first_name']},\n\nWe hebben meerdere nieuwe huurwoningen gevonden die passen bij je zoekfilters:\n\n"
     try:
@@ -36,16 +36,25 @@ def generate_rental_listings_message(user, apartments):
                 f"\t {apartment['square_meters']} m2\n"
                 f"\t {apartment['url']}\n\n"
             )
+            email_message = {
+                "index": i,
+                'location': apartment['location'],
+                'address': apartment['address'],
+                'price': apartment['rent_price'] if apartment['rent_price'] else apartment['selling_price'],
+                'bedrooms': apartment['bedrooms'],
+                'square_meters': apartment['square_meters'],
+                'url': apartment['url']
+            }
+            static_message.append(email_message)
             if len(message_data) + len(message) < 4096:
                 message += message_data
             else:
                 rental_listings.append(message)
-                static_message += message
                 message = ""
             i += 1
     except Exception as e:
         logging.error(f'generate_rental_listings {e}')
     if len(rental_listings) == 0:
-        static_message = message
+        # static_message = message
         rental_listings.append(static_message)
     return rental_listings, static_message, user['phone_number']

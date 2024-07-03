@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from db.db_connection import lifespan
 from db.models.filter import FilterSchema, FilterStore
 from db.models.user import UserStore
-from tool.send_mail import send_email
+from tool.send_mail import send_email, send_email_with_credentials
 from tool.send_whatsapp import send_whatsapp
 from tool.utils import generate_rental_listings_message
 
@@ -48,7 +48,8 @@ class UserApartmentStore:
                     list_message, static_message, phone_number = generate_rental_listings_message(user, filtered_array)
                     try:
                         # formatted_data = json.dumps(filtered_array, indent=4)
-                        status = await send_email("Instarent nieuwe huurwoning", static_message, user['email'])
+                        # status = await send_email("Instarent nieuwe huurwoning", static_message, user['email'])
+                        status = send_email_with_credentials(static_message, user['email'], user['first_name'])
                         can_send = status
                         if user['whatsapp']:
                             print(list_message)

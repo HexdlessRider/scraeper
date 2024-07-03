@@ -74,7 +74,7 @@ class ApartmentStore:
     @staticmethod
     async def get_filtered_apartment(data: FilterSchema):
         data = data.dict()
-        async with (lifespan() as client):
+        async with lifespan() as client:
 
             query = client.table('apartments').select('*')
             # Apply data based on the provided dictionary
@@ -93,7 +93,7 @@ class ApartmentStore:
                 )
 
             if data['min_square_meters']:
-                query = query.gte('square_meters', data['min_square_meters'])
+                query = query.gte('square_meters', round(data['min_square_meters']))
 
             if data['furnished']:
                 query = query.eq('furnished', data['furnished'])
